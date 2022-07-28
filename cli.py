@@ -104,7 +104,7 @@ def cli_start(ws, wallet_alias):
     return blockchain
 
 
-def main():
+def main() -> object:
     end_script = False
     ws = Wallets()
     wallet_alias = {}
@@ -129,7 +129,7 @@ def main():
 
             if (cli_add(blockchain, Transaction_list, ws, wallet_alias)):
                 Transaction_list = []
-            print(start_time)
+            print("Start-Time:", start_time)
 
         if (order == "help"): cli_help()
 
