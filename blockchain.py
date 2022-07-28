@@ -8,6 +8,10 @@ from wallet import *
 
 from config import difficulty, max_nonce
 
+file = open("startime.txt", "r")
+value = file.read()
+startTime = float(value)
+file.close()
 
 class Block():
     def __init__(self):
@@ -65,6 +69,9 @@ class BlockChain():
         if (input("broadcast the generated block? (yes / no) ") == "yes"):
             # pendent de canvi:
             end_time = time.time()
+            newBlock.Time = end_time - startTime
+
+
 
             self.blocks.append(newBlock)  # append directe?
 
@@ -77,10 +84,7 @@ class BlockChain():
             secret_block.append(newBlock)
             return secret_block
 
-        file = open("startime.txt", "r")
-        value = file.read()
-        float_value = float(value)
-        file.close()
+
         print(end_time)
         print(end_time - float_value)
 
