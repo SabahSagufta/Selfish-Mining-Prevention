@@ -72,6 +72,7 @@ class BlockChain():
 
         if (input("broadcast the generated block? (yes / no) ") == "yes"):
             end_T1 = time.time()
+            print("Time T1=", end_T1-InitBlockChain.start_T1)
 
 
 
@@ -92,7 +93,7 @@ class BlockChain():
                 secret_block.append(newBlock)
                 # return secret_block
 
-            print("End-Time:", end_time)
+
 
         else:
             dummyBlock = self.createBlock([], prevBlock.Hash)
