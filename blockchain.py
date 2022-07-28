@@ -1,7 +1,7 @@
 import hashlib
 import pickledb
 import time
-
+Max_Time = 600.00
 from transaction import *
 from wallet import *
 
@@ -21,6 +21,8 @@ class Block():
         self.Nonce: int
         self.Transactions = []
         self.Time: float
+
+
 
 
 class BlockChain():
@@ -66,24 +68,36 @@ class BlockChain():
         newBlock = self.createBlock(txs, prevBlock.Hash)
         secret_block = []
 
+
+
         if (input("broadcast the generated block? (yes / no) ") == "yes"):
-            # pendent de canvi:
-            end_time = time.time()
-            newBlock.Time = end_time - startTime
-            print("block generation time:", newBlock.Time)
+            end_T1 = time.time()
 
-            self.blocks.append(newBlock)  # append directe?
 
-            # update database
-            self.lastHash = newBlock.Hash
-            self.database.set("lh", newBlock.Hash)
-            self.database.set(newBlock.Hash, serializeBlock(newBlock))
-            self.database.dump()
+
+            if ((end_T1-InitBlockChain.start_T1) < Max_Time):
+                # pendent de canviz
+                end_time = time.time()
+                newBlock.Time = end_time - startTime
+                print("block generation time:", newBlock.Time)
+
+                self.blocks.append(newBlock)  # append directe?
+
+                # update database
+                self.lastHash = newBlock.Hash
+                self.database.set("lh", newBlock.Hash)
+                self.database.set(newBlock.Hash, serializeBlock(newBlock))
+                self.database.dump()
+            else:
+                secret_block.append(newBlock)
+                # return secret_block
+
+            print("End-Time:", end_time)
+
         else:
-            secret_block.append(newBlock)
-            # return secret_block
+            dummyBlock = self.createBlock([], prevBlock.Hash)
+            self.blocks.append(dummyBlock)
 
-        print("End-Time:", end_time)
 
     def Genesis(self, coinbaseTx: Transaction):
         return self.createBlock([coinbaseTx], "")
@@ -131,7 +145,13 @@ def InitBlockChain(adress: str):
     else:
         newBlockChain.blocks.append(newBlockChain.Genesis(CoinbaseTx(adress, "")))
 
+    InitBlockChain.start_T1 = time.time()
+
+
+
     return newBlockChain
+
+
 
 
 def printBlock(block: Block):
