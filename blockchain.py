@@ -1,6 +1,7 @@
 import hashlib
 import pickledb
 import time
+
 Max_Time = 600.00
 from transaction import *
 from wallet import *
@@ -21,8 +22,6 @@ class Block():
         self.Nonce: int
         self.Transactions = []
         self.Time: float
-
-
 
 
 class BlockChain():
@@ -68,15 +67,11 @@ class BlockChain():
         newBlock = self.createBlock(txs, prevBlock.Hash)
         secret_block = []
 
-
-
         if (input("broadcast the generated block? (yes / no) ") == "yes"):
             end_T1 = time.time()
-            print("Time T1=", end_T1-InitBlockChain.start_T1)
+            print("Time T1=", end_T1 - InitBlockChain.start_T1)
 
-
-
-            if ((end_T1-InitBlockChain.start_T1) < Max_Time):
+            if ((end_T1 - InitBlockChain.start_T1) < Max_Time):
                 # pendent de canviz
                 end_time = time.time()
                 newBlock.Time = end_time - startTime
@@ -90,14 +85,21 @@ class BlockChain():
                 self.database.set(newBlock.Hash, serializeBlock(newBlock))
                 self.database.dump()
             else:
-                secret_block.append(newBlock)
+                self.secret_block = secret_block.append(newBlock)
                 # return secret_block
-
-
 
         else:
             dummyBlock = self.createBlock([], prevBlock.Hash)
             self.blocks.append(dummyBlock)
+
+    def adding_selfish_block(self):
+        self.SB = self.secret_block.pop()
+        self.CB = self.blocks.pop()
+        if (self.SB.prevBlock==self.CB.prevBlock):
+            self.blocks.append(self.secret_block)
+
+        else:
+            print("The selfish block is rejected")
 
 
     def Genesis(self, coinbaseTx: Transaction):
@@ -148,11 +150,7 @@ def InitBlockChain(adress: str):
 
     InitBlockChain.start_T1 = time.time()
 
-
-
     return newBlockChain
-
-
 
 
 def printBlock(block: Block):
