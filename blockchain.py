@@ -86,7 +86,7 @@ class BlockChain():
 
 
         print(end_time)
-        print(end_time - float_value)
+      
 
 
 
