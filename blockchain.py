@@ -1,4 +1,3 @@
-
 import hashlib
 import pickledb
 import time
@@ -12,6 +11,7 @@ file = open("startime.txt", "r")
 value = file.read()
 startTime = float(value)
 file.close()
+
 
 class Block():
     def __init__(self):
@@ -70,8 +70,7 @@ class BlockChain():
             # pendent de canvi:
             end_time = time.time()
             newBlock.Time = end_time - startTime
-
-
+            print("block generation time:", newBlock.Time)
 
             self.blocks.append(newBlock)  # append directe?
 
@@ -82,13 +81,9 @@ class BlockChain():
             self.database.dump()
         else:
             secret_block.append(newBlock)
-            return secret_block
+            # return secret_block
 
-
-        print(end_time)
-      
-
-
+        print("End-Time:", end_time)
 
     def Genesis(self, coinbaseTx: Transaction):
         return self.createBlock([coinbaseTx], "")
