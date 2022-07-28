@@ -9,6 +9,7 @@ def cli_help():
     print("-- transaction   - Send a transaction to another wallet")
     print("-- add   - Add a block with the previous transactions to the blockchain")
     print("-- wallet   - Create a new wallet")
+    print("-- adding_secret_block - add the secret block to blockchain")
     print("-- quit   - Close script")
     print("--------------------------------------------------")
 
@@ -92,6 +93,8 @@ def cli_add(blockchain: BlockChain, Transaction_list: list, ws: Wallets, wallet_
     return False
 
 
+
+
 def cli_start(ws, wallet_alias):
     print("Creating user wallet to Init BlockChain ...")
     w = cli_wallet(ws, wallet_alias)
@@ -102,6 +105,9 @@ def cli_start(ws, wallet_alias):
     print("--------------------------------------------------")
 
     return blockchain
+
+
+
 
 
 def main() -> object:
@@ -130,6 +136,8 @@ def main() -> object:
             if (cli_add(blockchain, Transaction_list, ws, wallet_alias)):
                 Transaction_list = []
             print("Start-Time:", start_time)
+
+        if(order=="adding_secret_block"): blockchain.adding_selfish_block()
 
         if (order == "help"): cli_help()
 
