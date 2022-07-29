@@ -96,7 +96,7 @@ class BlockChain():
     def adding_selfish_block(self):
         SB = secret_block[0]
         CB = self.blocks[-1]
-        if (SB.addBlock.prevBlock == CB.addBlock.prevBlock):
+        if (SB.prevBlock == CB.prevBlock):
             self.blocks.append(secret_block)
 
         else:
