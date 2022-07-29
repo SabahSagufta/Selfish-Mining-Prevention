@@ -2,10 +2,9 @@ import hashlib
 import pickledb
 import time
 
-Max_Time = 600.00
+
 from transaction import *
 from wallet import *
-
 from config import difficulty, max_nonce
 
 file = open("startime.txt", "r")
@@ -13,6 +12,8 @@ value = file.read()
 startTime = float(value)
 file.close()
 
+secret_block = []
+Max_Time = 600.00
 
 class Block():
     def __init__(self):
@@ -65,7 +66,7 @@ class BlockChain():
 
         prevBlock = self.blocks[len(self) - 1]
         newBlock = self.createBlock(txs, prevBlock.Hash)
-        secret_block = []
+
 
         if (input("broadcast the generated block? (yes / no) ") == "yes"):
             end_T1 = time.time()
@@ -93,10 +94,10 @@ class BlockChain():
             self.blocks.append(dummyBlock)
 
     def adding_selfish_block(self):
-        self.SB = self.secret_block.pop()
-        self.CB = self.blocks.pop()
-        if (self.SB.prevBlock==self.CB.prevBlock):
-            self.blocks.append(self.secret_block)
+        SB = secret_block[0]
+        CB = self.blocks[-1]
+        if (SB.addBlock.prevBlock == CB.addBlock.prevBlock):
+            self.blocks.append(secret_block)
 
         else:
             print("The selfish block is rejected")
